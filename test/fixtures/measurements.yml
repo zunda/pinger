@@ -1,15 +1,15 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  source: MyString
-  target: MyString
-  note: MyString
-  sent_at: 2025-04-03 02:39:55
-  received_at: 2025-04-03 02:39:55
+from_home:
+  source: 192.0.2.1
+  target: pinger.example.com
+  note: Home network
+  sent_at: 2025-04-03 02:39:55.0000000
+  received_at: 2025-04-03 02:39:55.3000000
 
-two:
-  source: MyString
-  target: MyString
-  note: MyString
-  sent_at: 2025-04-03 02:39:55
-  received_at: 2025-04-03 02:39:55
+in_transit:
+  source: 192.0.2.2
+  target: pinger.example.com
+  note: In flight network
+  sent_at: 2025-04-03 02:40:55.0000000
+  received_at: 2025-04-03 02:41:00.4000000
