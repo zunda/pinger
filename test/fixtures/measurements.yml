@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  source: MyString
+  target: MyString
+  note: MyString
+  sent_at: 2025-04-03 02:39:55
+  received_at: 2025-04-03 02:39:55
+
+two:
+  source: MyString
+  target: MyString
+  note: MyString
+  sent_at: 2025-04-03 02:39:55
+  received_at: 2025-04-03 02:39:55
