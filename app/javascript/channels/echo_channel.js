@@ -11,9 +11,6 @@ consumer.subscriptions.create("EchoChannel", {
 
   received(data) {
     // Called when there's incoming data on the websocket for this channel
-  },
-
-  ping: function() {
-    return this.perform('ping');
+    this.perform('pong', { message: data })
   }
 });
