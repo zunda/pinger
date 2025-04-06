@@ -40,7 +40,7 @@ function addHeader() {
 addHeader()
 
 function addStatsRow() {
-  const row = table.insertRow(-1)
+  const row = table.insertRow(1)
 
   const ts = new Date()
   const sinceCell = row.insertCell(-1)
