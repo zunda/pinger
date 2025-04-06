@@ -1,9 +1,13 @@
 import consumer from "channels/consumer"
 
 const table = document.getElementById("ping-stats")
-let count = 0;
-let countNode = undefined;
-let untilCell = undefined;
+let count = 0
+let countNode = undefined
+let untilCell = undefined
+
+const noteInput = document.getElementById("input-note")
+let note = noteInput.value
+let noteCell = undefined
 
 consumer.subscriptions.create("EchoChannel", {
   connected() {
@@ -22,14 +26,14 @@ consumer.subscriptions.create("EchoChannel", {
 
   received(data) {
     // Called when there's incoming data on the websocket for this channel
-    this.perform('pong', { message: data })
+    this.perform('pong', { ping: data, note: note })
     count++
     countNode.nodeValue = count.toString()
   }
 });
 
 function addHeader() {
-  const header = ["Since", "Until", "Pings"]
+  const header = ["Since", "Until", "Note", "Pings"]
   const row = table.insertRow(-1)
   for(var i = 0; i < header.length; i++) {
     const cell = document.createElement("th")
@@ -51,9 +55,19 @@ function addStatsRow() {
   untilCell.style.textAlign = "center"
   untilCell.appendChild(document.createTextNode("-"))
 
+  noteCell = row.insertCell(-1)
+  noteCell.style.textAlign = "left"
+  noteCell.appendChild(document.createTextNode(note))
+
   count = 0
   const countCell = row.insertCell(-1)
   countCell.style.textAlign = "right"
   countNode = document.createTextNode(count.toString())
   countCell.appendChild(countNode)
 };
+
+function updateNote() {
+  note = noteInput.value
+  noteCell.replaceChild(document.createTextNode(note), noteCell.childNodes[0])
+}
+document.getElementById("botton-note").addEventListener("click", updateNote)

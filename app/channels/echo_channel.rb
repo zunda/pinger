@@ -22,8 +22,9 @@ class EchoChannel < ApplicationCable::Channel
 
   def pong(data)
     received_at = Time.now
-    sent_at = Time.at(data["message"])
-    logger.debug "RTT: #{"%.3f" % ((received_at - sent_at)*1000)} ms for #{@uuid}"
+    sent_at = Time.at(data["ping"])
+    note = data["note"]
+    logger.debug "RTT: #{"%.3f" % ((received_at - sent_at)*1000)} ms for #{note.inspect} (#{@uuid})"
   end
 
   periodically :ping, every: PING_PERIOD
