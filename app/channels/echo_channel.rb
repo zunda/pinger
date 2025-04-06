@@ -5,9 +5,11 @@ class EchoChannel < ApplicationCable::Channel
     5.seconds
   end
 
+  attr_reader :uuid
 
   def subscribed
-    stream_from "echo"
+    @uuid = connection.connection_identifier
+    stream_from @uuid
   end
 
   def unsubscribed
@@ -15,13 +17,13 @@ class EchoChannel < ApplicationCable::Channel
   end
 
   def ping
-    ActionCable.server.broadcast("echo", Time.now.to_f)
+    ActionCable.server.broadcast(@uuid, Time.now.to_f)
   end
 
   def pong(data)
     received_at = Time.now
     sent_at = Time.at(data["message"])
-    $stderr.puts "RTT: #{received_at - sent_at}"
+    logger.debug "RTT: #{"%.3f" % ((received_at - sent_at)*1000)} ms for #{@uuid}"
   end
 
   periodically :ping, every: PING_PERIOD
