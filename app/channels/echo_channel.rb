@@ -1,5 +1,10 @@
 class EchoChannel < ApplicationCable::Channel
-  PING_PERIOD = 30.seconds
+  PING_PERIOD = if Rails.env.production?
+    30.seconds
+  else
+    5.seconds
+  end
+
 
   def subscribed
     stream_from "echo"
