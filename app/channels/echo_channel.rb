@@ -1,10 +1,4 @@
 class EchoChannel < ApplicationCable::Channel
-  PING_PERIOD = if Rails.env.production?
-    30.seconds
-  else
-    5.seconds
-  end
-
   attr_reader :uuid
 
   def subscribed
@@ -16,16 +10,14 @@ class EchoChannel < ApplicationCable::Channel
     # Any cleanup needed when channel is unsubscribed
   end
 
-  def ping
-    ActionCable.server.broadcast(@uuid, Time.now.to_f)
+  def ping(data)
+    ActionCable.server.broadcast(@uuid, data["ping"])
   end
 
-  def pong(data)
-    received_at = Time.now
-    sent_at = Time.at(data["ping"])
+  def report(data)
+    sent_at = Time.at(data["sent_at"].to_f/1000)
+    received_at = Time.at(data["received_at"].to_f/1000)
     note = data["note"]
-    logger.debug "RTT: #{"%.3f" % ((received_at - sent_at)*1000)} ms for #{note.inspect} (#{@uuid})"
+    logger.debug "RTT: #{"%.0f" % ((received_at - sent_at)*1000)} ms for #{note.inspect} (#{@uuid})"
   end
-
-  periodically :ping, every: PING_PERIOD
 end

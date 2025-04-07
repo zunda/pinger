@@ -9,14 +9,20 @@ const noteInput = document.getElementById("input-note")
 let note = noteInput.value
 let noteCell = undefined
 
-consumer.subscriptions.create("EchoChannel", {
+const pingInterval = 10000 // msec
+let periodicPinger = undefined
+
+const echoChannel = consumer.subscriptions.create("EchoChannel", {
   connected() {
     // Called when the subscription is ready for use on the server
     addStatsRow()
+    ping()
+    periodicPinger = setInterval(ping, pingInterval)
   },
 
   disconnected() {
     // Called when the subscription has been terminated by the server
+    clearInterval(periodicPinger)
     const ts = new Date()
     untilCell.replaceChild(
      document.createTextNode(ts.toLocaleTimeString()),
@@ -26,11 +32,17 @@ consumer.subscriptions.create("EchoChannel", {
 
   received(data) {
     // Called when there's incoming data on the websocket for this channel
-    this.perform('pong', { ping: data, note: note })
+    const received_at = Date.now()
+    const sent_at = data
+    this.perform("report", { sent_at: sent_at, received_at: received_at, note: note })
     count++
     countNode.nodeValue = count.toString()
   }
 });
+
+function ping() {
+  echoChannel.perform("ping", { ping: Date.now() })
+}
 
 function addHeader() {
   const header = ["Since", "Until", "Note", "Pings"]
