@@ -4,6 +4,7 @@ class EchoChannel < ApplicationCable::Channel
   def subscribed
     @uuid = connection.connection_identifier
     stream_from @uuid
+    @target = connection.target
   end
 
   def unsubscribed
@@ -18,6 +19,6 @@ class EchoChannel < ApplicationCable::Channel
     sent_at = Time.at(data["sent_at"].to_f/1000)
     received_at = Time.at(data["received_at"].to_f/1000)
     note = data["note"]
-    logger.debug "RTT: #{"%.0f" % ((received_at - sent_at)*1000)} ms for #{note.inspect} (#{@uuid})"
+    logger.debug "RTT to #{@target}: #{"%.0f" % ((received_at - sent_at)*1000)} ms for #{note.inspect} (#{@uuid})"
   end
 end
