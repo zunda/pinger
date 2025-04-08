@@ -1,5 +1,10 @@
 require "test_helper"
 
+class ActionCable::Channel::ConnectionStub
+  attr :target
+  attr :source
+end
+
 class ApplicationCable::ConnectionTest < ActionCable::Connection::TestCase
   test "connects with uuid" do
     connect
@@ -10,5 +15,11 @@ class ApplicationCable::ConnectionTest < ActionCable::Connection::TestCase
     target = "pinger.example.com"
     connect headers: { "Host" => target }
     assert_equal target, connection.target
+  end
+
+  test "picks up remote addr if there is no other hints of source" do
+    source = "192.0.2.1"
+    connect env: { "REMOTE_ADDR" => source }
+    assert_equal source, connection.source
   end
 end
