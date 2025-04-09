@@ -13,7 +13,7 @@ let maxNode = undefined
 let untilCell = undefined
 
 const noteInput = document.getElementById("input-note")
-let note = noteInput.value
+let note = noteInput.value.trim()
 let noteCell = undefined
 
 const intervalInput = document.getElementById("input-interval")
@@ -129,7 +129,7 @@ function addStatsRow() {
 };
 
 function updateNote() {
-  note = noteInput.value
+  note = noteInput.value.trim()
   noteCell.replaceChild(document.createTextNode(note), noteCell.childNodes[0])
 }
 document.getElementById("botton-note").addEventListener("click", updateNote)
