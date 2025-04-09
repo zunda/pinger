@@ -17,8 +17,8 @@ class EchoChannel < ApplicationCable::Channel
   end
 
   def report(data)
-    sent_at = Time.at(data["sent_at"].to_f/1000)
-    received_at = Time.at(data["received_at"].to_f/1000)
+    sent_at = Time.at(Rational(data["sent_at"], 1000))
+    received_at = Time.at(Rational(data["received_at"], 1000))
     note = data["note"]
     logger.info "RTT from #{@source} to #{@target}: #{"%.0f" % ((received_at - sent_at)*1000)} ms for #{note.inspect} (#{@uuid})"
   end
