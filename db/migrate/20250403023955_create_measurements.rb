@@ -4,8 +4,8 @@ class CreateMeasurements < ActiveRecord::Migration[8.0]
       t.string :source
       t.string :target
       t.string :note
-      t.timestamp :sent_at
       t.timestamp :received_at
+      t.integer :rtt_ms
 
       t.timestamps
     end

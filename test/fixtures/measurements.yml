@@ -4,7 +4,7 @@ from_home:
   source: 192.0.2.1
   target: pinger.example.com
   note: Home network
-  sent_at: 2025-04-03 02:39:55.0000000
+  rtt_ms: 300
   received_at: 2025-04-03 02:39:55.3000000
   connection: 68c9db09-3f40-489b-97c4-506781498b40
 
@@ -12,6 +12,6 @@ in_transit:
   source: 192.0.2.2
   target: pinger.example.com
   note: In flight network
-  sent_at: 2025-04-03 02:40:55.0000000
+  rtt_ms: 5400
   received_at: 2025-04-03 02:41:00.4000000
   connection: bee94c2e-ca18-4a2b-a4ee-7e7f802b4342

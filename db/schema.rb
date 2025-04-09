@@ -18,8 +18,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_04_020403) do
     t.string "source"
     t.string "target"
     t.string "note"
-    t.datetime "sent_at", precision: nil
     t.datetime "received_at", precision: nil
+    t.integer "rtt_ms"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "connection"
