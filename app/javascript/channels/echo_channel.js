@@ -16,6 +16,9 @@ const noteInput = document.getElementById("input-note")
 let note = noteInput.value.trim()
 let noteCell = undefined
 
+const noteButton = document.getElementById("button-note")
+noteButton.disabled = true
+
 const intervalInput = document.getElementById("input-interval")
 let pingInterval = parseInt(intervalInput.value) * 1000 // msec
 let periodicPinger = undefined
@@ -45,6 +48,7 @@ const echoChannel = consumer.subscriptions.create("EchoChannel", {
     const received_at = Date.now()
     const sent_at = data
     this.perform("report", { sent_at: sent_at, received_at: received_at, note: note })
+    noteCell.replaceChild(document.createTextNode(note), noteCell.childNodes[0])
     const d = received_at - sent_at
     if (!min || d < min) { min = d }
     sum += d
@@ -130,9 +134,10 @@ function addStatsRow() {
 
 function updateNote() {
   note = noteInput.value.trim()
-  noteCell.replaceChild(document.createTextNode(note), noteCell.childNodes[0])
+  noteButton.disabled = true
 }
-document.getElementById("botton-note").addEventListener("click", updateNote)
+noteButton.addEventListener("click", updateNote)
+noteInput.addEventListener("input", () => { noteButton.disabled = false })
 
 function updateInterval() {
   pingInterval = parseInt(intervalInput.value) * 1000
