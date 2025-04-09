@@ -16,20 +16,23 @@ const noteInput = document.getElementById("input-note")
 let note = noteInput.value
 let noteCell = undefined
 
-const pingInterval = 10000 // msec
+const intervalInput = document.getElementById("input-interval")
+let pingInterval = parseInt(intervalInput.value) * 1000 // msec
 let periodicPinger = undefined
+let connected = false
 
 const echoChannel = consumer.subscriptions.create("EchoChannel", {
   connected() {
     // Called when the subscription is ready for use on the server
+    connected = true
     addStatsRow()
-    ping()
-    periodicPinger = setInterval(ping, pingInterval)
+    updateInterval()
   },
 
   disconnected() {
     // Called when the subscription has been terminated by the server
-    clearInterval(periodicPinger)
+    connected = false
+    updateInterval()
     const ts = new Date()
     untilCell.replaceChild(
      document.createTextNode(ts.toLocaleTimeString()),
@@ -130,3 +133,16 @@ function updateNote() {
   noteCell.replaceChild(document.createTextNode(note), noteCell.childNodes[0])
 }
 document.getElementById("botton-note").addEventListener("click", updateNote)
+
+function updateInterval() {
+  pingInterval = parseInt(intervalInput.value) * 1000
+  if (periodicPinger) {
+    clearInterval(periodicPinger)
+    periodicPinger = undefined
+  }
+  if (connected && pingInterval > 0) {
+    ping()
+    periodicPinger = setInterval(ping, pingInterval)
+  }
+}
+intervalInput.addEventListener("change", updateInterval)
